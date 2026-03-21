@@ -273,7 +273,8 @@ export default function HomePage() {
             <div style={{ color: '#7A0102', fontSize: '40px', fontWeight: '900', marginBottom: '10px', opacity: 0.3 }}>{m.name[0]}</div>
             <h3 style={{ fontSize: '24px', margin: '0 0 10px 0', fontWeight: '800' }}>{m.name}</h3>
             <p style={{ color: '#7A0102', fontWeight: '700', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '2px' }}>{m.role}</p>
-            <p style={{ color: '#888', fontSize: '13px', marginTop: '15px', lineHeight: '1.5' }}>{m.college}</p>
+           {/* @ts-ignore */}
+<p style={{ color: '#888', fontSize: '13px', marginTop: '15px', lineHeight: '1.5' }}>{m.college}</p>
           </div>
 
         </div>
