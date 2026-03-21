@@ -14,7 +14,6 @@ export const metadata = {
   description: 'The premier UPSC community at Delhi University.',
 };
 
-// THIS IS THE CRITICAL ADDITION FOR MOBILE RESPONSIVENESS
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -32,10 +31,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         display: 'flex', 
         flexDirection: 'column', 
         minHeight: '100vh',
-        overflowX: 'hidden' // Prevents horizontal scrolling on mobile
+        width: '100%',
+        maxWidth: '100vw',    // Added to lock width
+        overflowX: 'hidden',  // Added to hide rogue horizontal space
+        position: 'relative', // Helps with absolute positioned elements
+        boxSizing: 'border-box'
       }}>
         <Navbar />
-        <main style={{ flexGrow: 1, width: '100%' }}>
+        <main style={{ 
+          flexGrow: 1, 
+          width: '100%', 
+          maxWidth: '100vw',  // Added to main container
+          overflowX: 'hidden' // Double layer of protection
+        }}>
           {children}
         </main>
         <Footer />

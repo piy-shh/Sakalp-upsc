@@ -4,6 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  /* This ensures padding doesn't push width past 100% */
+}
 :root {
   /* Unified Light Theme - CAIC Primary Red */
   --background: #f8f9fa;
