@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Unified Light Theme - CAIC Primary Red */
+  --background: #f8f9fa;
+  --foreground: #1a1a1a;
+  --primary: #7A0102;
+  --primary-dark: #630001;
+  --accent: #f8d7da;
+
+  --card: #ffffff;
+  --card-hover: #f8f9fa;
+  --border: rgba(0,0,0,0.08);
+  --muted: #6c757d;
+  --muted-foreground: #6c757d;
+  
+  /* Additional theme colors */
+  --secondary: #e9ecef;
+  --secondary-foreground: #1a1a1a;
+  --destructive: #dc3545;
+  --destructive-foreground: #ffffff;
+  --input: #dee2e6;
+  --ring: #7A0102;
+  --radius: 0.75rem;
+  --nav-bg: #7A0102;
+  --footer-bg: #0f0f0f;
+}
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Cards - Light Theme */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(122, 1, 2, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px -12px rgba(122, 1, 2, 0.18);
+  border-color: var(--primary);
+}
+
+/* Navbar Links */
+.nav-link {
+  position: relative;
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px -5px rgba(122, 1, 2, 0.35);
+}
+
+/* Scrollbar - Light Theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* --- CAIC look helpers --- */
+.caic-section-title {
+  position: relative;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+}
+
+.caic-section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 80px;
+  height: 2px;
+  background-color: var(--primary);
+}
+.nav-footer {
+  /* A deeper, more modern dark shade */
+  background-color: #0c0c0e;
+  color: #94a3b8;
+  /* Soft slate instead of pure white for body text */
+  padding: 3rem 1rem 1.5rem 1rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  /* Subtle separator */
+}
+
+.nav-footer h5 {
+  color: #ffffff;
+  font-size: 0.75rem;
+  /* Smaller, uppercase headers look more stylish */
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+/* The accent line: Made it thinner and more elegant */
+.nav-footer h5::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, #fff, transparent);
+  margin-top: 0.75rem;
+  opacity: 0.3;
+}
+
+/* 1. Target the links inside the footer specifically */
+.nav-footer a {
+  color: #94a3b8 !important;
+  /* Soft Aesthetic Grey */
+  text-decoration: none !important;
+  /* Removes the underline */
+  transition: color 0.2s ease-in-out, transform 0.2s ease;
+  display: inline-block;
+}
+
+/* 2. Hover state for a "Glow" effect */
+.nav-footer a:hover {
+  color: #ffffff !important;
+  /* Wakes up to white on hover */
+  text-decoration: none !important;
+  transform: translateX(3px);
+  /* Subtle slide-right effect */
+}
+
+/* 3. This stops the "Visited" links from turning purple */
+.nav-footer a:visited {
+  color: #94a3b8 !important;
+}
+
+/* 4. Fix for the Bullet Points you saw earlier */
+.nav-footer ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.nav-footer li {
+  margin-bottom: 0.5rem;
+}
+
+
+
+/* Social Icon styling if you're using them */
+.nav-footer .social-link {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.nav-footer .social-link:hover {
+  opacity: 1;
+}
