@@ -1,11 +1,16 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
   return (
     <nav style={{ 
-      backdropFilter: 'blur(16px) saturate(380%)',
-      backgroundColor: 'rgba(122, 1, 2, 0.9)', // Deep Burgundy with Transparency
+      backdropFilter: 'blur(16px) saturate(180%)',
+      backgroundColor: 'rgba(122, 1, 2, 0.95)', 
       padding: '16px 8%', 
       display: 'flex', 
       justifyContent: 'space-between', 
@@ -16,7 +21,7 @@ export default function Navbar() {
       width: '100%',
       zIndex: 2000,
       boxSizing: 'border-box',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.1)', // Subtle light border
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       boxShadow: '0 4px 30px rgba(0, 0, 0, 0.3)'
     }}>
       {/* BRANDING */}
@@ -33,12 +38,30 @@ export default function Navbar() {
         <span style={{ color: 'rgba(255,255,255,0.5)' }}>//</span> SANKALP
       </Link>
 
+      {/* MOBILE BURGER ICON */}
+      <div 
+        onClick={toggleMenu}
+        style={{ 
+          display: 'none', 
+          flexDirection: 'column', 
+          gap: '5px', 
+          cursor: 'pointer',
+          zIndex: 2001 
+        }}
+        className="burger-icon"
+      >
+        <div style={{ width: '25px', height: '2px', backgroundColor: '#fff', transition: '0.3s', transform: isOpen ? 'rotate(45deg) translate(5px, 5px)' : '' }}></div>
+        <div style={{ width: '25px', height: '2px', backgroundColor: '#fff', opacity: isOpen ? 0 : 1, transition: '0.3s' }}></div>
+        <div style={{ width: '25px', height: '2px', backgroundColor: '#fff', transition: '0.3s', transform: isOpen ? 'rotate(-45deg) translate(5px, -5px)' : '' }}></div>
+      </div>
+
       {/* NAVIGATION LINKS */}
-      <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
+      <div className={`nav-menu ${isOpen ? 'open' : ''}`}>
         {['About', 'Events', 'Team'].map((item) => (
           <Link 
             key={item}
-            href={`/#${item.toLowerCase()}`} 
+            href={item === 'Team' ? '/team' : `/#${item.toLowerCase()}`} 
+            onClick={() => setIsOpen(false)}
             style={{ 
               color: '#fff', 
               textDecoration: 'none', 
@@ -49,21 +72,13 @@ export default function Navbar() {
               opacity: 0.8,
               transition: '0.3s ease'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.letterSpacing = '2px';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '0.8';
-              e.currentTarget.style.letterSpacing = '1.5px';
-            }}
           >
             {item}
           </Link>
         ))}
 
-        {/* CTA BUTTON - High Contrast White */}
-        <Link href="/join" style={{ 
+        {/* CTA BUTTON */}
+        <Link href="/join" onClick={() => setIsOpen(false)} style={{ 
           backgroundColor: '#fff', 
           color: '#7A0102', 
           padding: '10px 22px', 
@@ -73,21 +88,39 @@ export default function Navbar() {
           fontSize: '12px',
           textTransform: 'uppercase',
           letterSpacing: '1px',
-          transition: 'all 0.3s ease',
-          boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = '#f0f0f0';
-          e.currentTarget.style.transform = 'scale(1.05)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = '#fff';
-          e.currentTarget.style.transform = 'scale(1)';
-        }}
-        >
+          textAlign: 'center'
+        }}>
           Join Portal
         </Link>
       </div>
+
+      <style jsx>{`
+        .nav-menu {
+          display: flex;
+          gap: 30px;
+          align-items: center;
+        }
+
+        @media (max-width: 768px) {
+          .burger-icon {
+            display: flex !important;
+          }
+
+          .nav-menu {
+            position: fixed;
+            top: 0;
+            right: ${isOpen ? '0' : '-100%'};
+            height: 100vh;
+            width: 70%;
+            background: rgba(122, 1, 2, 0.98);
+            flex-direction: column;
+            justify-content: center;
+            transition: 0.4s ease-in-out;
+            backdrop-filter: blur(10px);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+          }
+        }
+      `}</style>
     </nav>
   );
 }
