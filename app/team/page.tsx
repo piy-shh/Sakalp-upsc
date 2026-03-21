@@ -9,12 +9,12 @@ export default function TeamPage() {
       title: "Society Heads",
       description: "The primary architects of Sankalp's vision and national strategy.",
       members: [
-        { name: "Shagun Sharma", role: "President", college: "Kirori Mal College", image: "/team/shgun.jpeg", backImage: "shgun-desc.jpeg" },
-        { name: "Akanksha Sharma", role: "Vice President", college: "Hindu College", image: "/team/akansha.jpeg", backImage: "akansha-desc.jpeg" },
-        { name: "Umesh Yadav", role: "Chief Executive Secretary", college: "Ramjas College", image: "/team/umesh.jpeg", backImage: "umesh-desc.jpeg" },
-        { name: "Shubhya Pandey", role: "Joint Secretary", college: "Hansraj College", image: "/team/shubha.jpeg", backImage: "shubha-desc.jpeg" },
-        { name: "Kalpana Pathak", role: "General Secretary", college: "Hansraj College", image: "/team/kalpna.jpeg", backImage: "kalpna-desc.jpeg" },
-        { name: "Prince & Aashna", role: "Joint Secretaries", college: "Hansraj College", image: "prince and aashna.jpeg", backImage: "prince-desc.jpeg" }
+        { name: "Shagun Sharma", role: "President", image: "/team/shgun.jpeg", backImage: "shgun-desc.jpeg" },
+        { name: "Akanksha Sharma", role: "Vice President", image: "/team/akansha.jpeg", backImage: "akansha-desc.jpeg" },
+        { name: "Umesh Yadav", role: "Chief Executive Secretary",  image: "/team/umesh.jpeg", backImage: "umesh-desc.jpeg" },
+        { name: "Shubhya Pandey", role: "Joint Secretary", image: "/team/shubha.jpeg", backImage: "shubha-desc.jpeg" },
+        { name: "Kalpana Pathak", role: "General Secretary", image: "/team/kalpna.jpeg", backImage: "kalpna-desc.jpeg" },
+        { name: "Prince & Aashna", role: "Joint Secretaries",  image: "prince and aashna.jpeg", backImage: "prince-desc.jpeg" }
       ]
     },
     {
@@ -143,7 +143,9 @@ export default function TeamPage() {
                        <div className="card-content">
                           <h3 style={{ fontSize: '24px', margin: '0 0 8px 0', fontWeight: '900', letterSpacing: '-0.5px' }}>{m.name}</h3>
                           <p style={{ color: '#7A0102', fontWeight: '900', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '20px' }}>{m.role}</p>
-                          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', fontWeight: '500' }}>{m.college}</p>
+                        
+                         {/* @ts-ignore */}
+<p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', fontWeight: '500' }}>{m.college}</p>
                        </div>
                     </div>
 
