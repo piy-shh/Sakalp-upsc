@@ -14,20 +14,28 @@ export const metadata = {
   description: 'The premier UPSC community at Delhi University.',
 };
 
+// THIS IS THE CRITICAL ADDITION FOR MOBILE RESPONSIVENESS
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
+    <html lang="en" className={`${inter.variable}`} style={{ scrollBehavior: 'smooth' }}>
       <body style={{ 
         margin: 0, 
         padding: 0, 
         fontFamily: 'var(--font-inter)', 
         display: 'flex', 
         flexDirection: 'column', 
-        minHeight: '100vh' 
+        minHeight: '100vh',
+        overflowX: 'hidden' // Prevents horizontal scrolling on mobile
       }}>
         <Navbar />
-        {/* main flex-grow ensures the footer stays at the bottom even on short pages */}
-        <main style={{ flexGrow: 1 }}>
+        <main style={{ flexGrow: 1, width: '100%' }}>
           {children}
         </main>
         <Footer />
