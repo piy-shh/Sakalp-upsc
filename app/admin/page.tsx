@@ -19,7 +19,7 @@ import {
 export default function AdminPage() {
   const router = useRouter();
 
-  // --- 1. ALL STATE HOOKS AT THE TOP ---
+  // --- 1. ALL STATE HOOKS ---
   const [activeTab, setActiveTab] = useState('applications');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({ pending: 0, approved: 0, rejected: 0 });
@@ -48,8 +48,6 @@ export default function AdminPage() {
   }, []);
 
   // --- 3. ALL USEEFFECT HOOKS ---
-  
-  // Security Check Effect
   useEffect(() => {
     const checkUser = async () => {
       const supabase = createClient();
@@ -65,7 +63,6 @@ export default function AdminPage() {
     checkUser();
   }, [router]);
 
-  // Data Loading Effect
   useEffect(() => {
     if (!authLoading) {
       loadData();
@@ -107,7 +104,47 @@ export default function AdminPage() {
     a.click();
   };
 
-  // --- 5. EARLY RETURNS (Sit below the hooks) ---
+  // --- 5. STYLES (MOBILE RESPONSIVE) ---
+  const containerStyle = { 
+    padding: '20px 5%', 
+    maxWidth: '1200px', 
+    margin: '0 auto', 
+    boxSizing: 'border-box' as const,
+    width: '100%'
+  };
+  
+  const cardStyle = { 
+    backgroundColor: 'white', 
+    padding: '20px', 
+    borderRadius: '12px', 
+    boxShadow: '0 4px 15px rgba(0,0,0,0.05)', 
+    border: '1px solid #eee', 
+    marginBottom: '20px',
+    boxSizing: 'border-box' as const 
+  };
+  
+  const inputStyle = { 
+    width: '100%', 
+    padding: '12px', 
+    borderRadius: '8px', 
+    border: '1px solid #ddd', 
+    marginTop: '8px', 
+    marginBottom: '15px', 
+    boxSizing: 'border-box' as const,
+    fontSize: '16px' // Stops mobile zoom
+  };
+  
+  const primaryBtn = { 
+    backgroundColor: '#7A0102', 
+    color: 'white', 
+    padding: '12px 25px', 
+    borderRadius: '8px', 
+    border: 'none', 
+    fontWeight: 'bold' as const, 
+    cursor: 'pointer' 
+  };
+
+  // Loading State
   if (authLoading) {
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
@@ -120,67 +157,85 @@ export default function AdminPage() {
     );
   }
 
-  // Styles
-  const containerStyle = { padding: '40px 5%', maxWidth: '1200px', margin: '0 auto' };
-  const cardStyle = { backgroundColor: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', border: '1px solid #eee', marginBottom: '20px' };
-  const inputStyle = { width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', marginTop: '8px', marginBottom: '15px' };
-  const primaryBtn = { backgroundColor: '#7A0102', color: 'white', padding: '12px 25px', borderRadius: '8px', border: 'none', fontWeight: 'bold' as const, cursor: 'pointer' };
-
-  // --- 6. FINAL RENDER ---
   return (
     <div style={containerStyle}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+      {/* Header - Stacks on Mobile */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginBottom: '40px',
+        flexWrap: 'wrap',
+        gap: '20px'
+      }}>
         <div>
-          <h1 style={{ color: '#7A0102', fontSize: '32px', margin: 0, fontWeight: '800' }}>Sankalp Admin</h1>
-          <p style={{ color: '#666' }}>Society Management Portal</p>
+          <h1 style={{ color: '#7A0102', fontSize: 'clamp(24px, 6vw, 32px)', margin: 0, fontWeight: '800' }}>Sankalp Admin</h1>
+          <p style={{ color: '#666', fontSize: '14px' }}>Society Management Portal</p>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={() => window.location.href = '/'} style={{ background: 'white', border: '1px solid #ddd', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer' }}>View Site</button>
+        <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '350px' }}>
+          <button onClick={() => window.location.href = '/'} style={{ flex: 1, background: 'white', border: '1px solid #ddd', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px' }}>View Site</button>
           <button onClick={async () => { 
             const s = createClient(); 
             await s.auth.signOut(); 
             router.push('/login'); 
-          }} style={{ background: '#eee', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer' }}>Logout</button>
+          }} style={{ flex: 1, background: '#eee', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px' }}>Logout</button>
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-        <div style={{ ...cardStyle, borderLeft: '5px solid #ffa000' }}>
-          <div style={{ fontSize: '12px', color: '#888' }}>PENDING</div>
-          <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.pending}</div>
+      {/* Stats - Grid Stacking */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+        gap: '15px', 
+        marginBottom: '40px' 
+      }}>
+        <div style={{ ...cardStyle, borderLeft: '5px solid #ffa000', marginBottom: 0 }}>
+          <div style={{ fontSize: '10px', color: '#888' }}>PENDING</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.pending}</div>
         </div>
-        <div style={{ ...cardStyle, borderLeft: '5px solid #2e7d32' }}>
-          <div style={{ fontSize: '12px', color: '#888' }}>APPROVED</div>
-          <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.approved}</div>
+        <div style={{ ...cardStyle, borderLeft: '5px solid #2e7d32', marginBottom: 0 }}>
+          <div style={{ fontSize: '10px', color: '#888' }}>APPROVED</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.approved}</div>
         </div>
-        <div style={{ ...cardStyle, borderLeft: '5px solid #c62828' }}>
-          <div style={{ fontSize: '12px', color: '#888' }}>REJECTED</div>
-          <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.rejected}</div>
+        <div style={{ ...cardStyle, borderLeft: '5px solid #c62828', marginBottom: 0 }}>
+          <div style={{ fontSize: '10px', color: '#888' }}>REJECTED</div>
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.rejected}</div>
         </div>
       </div>
 
-      {/* Tabs Section */}
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '30px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+      {/* Tabs - Horizontal Scroll on Mobile */}
+      <div style={{ 
+        display: 'flex', 
+        gap: '10px', 
+        marginBottom: '30px', 
+        borderBottom: '1px solid #eee', 
+        paddingBottom: '10px',
+        overflowX: 'auto',
+        whiteSpace: 'nowrap',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none'
+      }}>
         {['applications', 'members', 'events', 'gallery', 'hero'].map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)} style={{
-            padding: '12px 24px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold',
-            backgroundColor: activeTab === tab ? '#7A0102' : 'transparent', color: activeTab === tab ? 'white' : '#666'
+            padding: '12px 24px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '12px',
+            backgroundColor: activeTab === tab ? '#7A0102' : 'transparent', color: activeTab === tab ? 'white' : '#666',
+            flexShrink: 0
           }}>{tab.toUpperCase()}</button>
         ))}
       </div>
 
-      {/* Tab Content Section */}
+      {/* Tab Content */}
       {activeTab === 'applications' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
-          {applications.filter(a => a.status === 'pending').map(app => (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100%, 1fr))', gap: '20px' }}>
+          {applications.filter(a => a.status === 'pending').length === 0 ? <p style={{textAlign: 'center', opacity: 0.5}}>No pending applications.</p> : 
+          applications.filter(a => a.status === 'pending').map(app => (
             <div key={app.id} style={cardStyle}>
-              <h3>{app.full_name}</h3>
-              <p style={{ color: '#7A0102', fontWeight: 'bold' }}>{app.course} • {app.college}</p>
-              <div style={{ fontSize: '13px', background: '#f5f5f5', padding: '10px', margin: '10px 0' }}>"{app.why_join}"</div>
+              <h3 style={{fontSize: '18px', marginBottom: '5px'}}>{app.full_name}</h3>
+              <p style={{ color: '#7A0102', fontWeight: 'bold', fontSize: '13px' }}>{app.course} • {app.college}</p>
+              <div style={{ fontSize: '13px', background: '#f5f5f5', padding: '12px', margin: '15px 0', borderRadius: '6px' }}>"{app.why_join}"</div>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <button onClick={() => handleAction(app.id, 'approved')} style={{ flex: 1, padding: '10px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '5px' }}>Approve</button>
-                <button onClick={() => handleAction(app.id, 'rejected')} style={{ flex: 1, padding: '10px', background: '#555', color: 'white', border: 'none', borderRadius: '5px' }}>Reject</button>
+                <button onClick={() => handleAction(app.id, 'approved')} style={{ flex: 1, padding: '12px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}>Approve</button>
+                <button onClick={() => handleAction(app.id, 'rejected')} style={{ flex: 1, padding: '12px', background: '#555', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}>Reject</button>
               </div>
             </div>
           ))}
@@ -188,66 +243,61 @@ export default function AdminPage() {
       )}
 
       {activeTab === 'members' && (
-        <div style={cardStyle}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3>Society Directory ({approvedMembers.length})</h3>
-            <button onClick={downloadCSV} style={{ ...primaryBtn, padding: '8px 15px', fontSize: '12px', backgroundColor: '#2e7d32' }}>Export to Excel</button>
+        <div style={{...cardStyle, padding: '15px'}}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+            <h3 style={{margin: 0, fontSize: '18px'}}>Members ({approvedMembers.length})</h3>
+            <button onClick={downloadCSV} style={{ ...primaryBtn, padding: '8px 15px', fontSize: '11px', backgroundColor: '#2e7d32' }}>Export Excel</button>
           </div>
-          <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #eee' }}>
-                <th style={{ padding: '10px' }}>NAME</th>
-                <th style={{ padding: '10px' }}>COLLEGE</th>
-                <th style={{ padding: '10px' }}>EMAIL</th>
-                <th style={{ padding: '10px' }}>ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              {approvedMembers.map(m => (
-                <tr key={m.id} style={{ borderBottom: '1px solid #f5f5f5' }}>
-                  <td style={{ padding: '10px' }}>{m.full_name}</td>
-                  <td style={{ padding: '10px' }}>{m.college}</td>
-                  <td style={{ padding: '10px' }}>{m.email}</td>
-                  <td style={{ padding: '10px' }}><button onClick={() => handleAction(m.id, 'rejected')} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Remove</button></td>
+          {/* Scrollable Table Container */}
+          <div style={{ width: '100%', overflowX: 'auto' }}>
+            <table style={{ width: '100%', minWidth: '600px', textAlign: 'left', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #eee' }}>
+                  <th style={{ padding: '12px' }}>NAME</th>
+                  <th style={{ padding: '12px' }}>COLLEGE</th>
+                  <th style={{ padding: '12px' }}>EMAIL</th>
+                  <th style={{ padding: '12px' }}>ACTION</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {approvedMembers.map(m => (
+                  <tr key={m.id} style={{ borderBottom: '1px solid #f5f5f5' }}>
+                    <td style={{ padding: '12px' }}>{m.full_name}</td>
+                    <td style={{ padding: '12px' }}>{m.college}</td>
+                    <td style={{ padding: '12px' }}>{m.email}</td>
+                    <td style={{ padding: '12px' }}><button onClick={() => handleAction(m.id, 'rejected')} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Remove</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      {activeTab === 'events' && (
+      {(activeTab === 'events' || activeTab === 'gallery' || activeTab === 'hero') && (
         <div style={cardStyle}>
-          <h3>Post New Event</h3>
-          <form onSubmit={async (e) => {
-            e.preventDefault();
-            setLoading(true);
-            const res = await addEvent(new FormData(e.currentTarget));
-            setLoading(false);
-            if(res.success) { alert("Event Added!"); loadData(); }
-          }}>
-            <input name="title" placeholder="Event Name" required style={inputStyle} />
-            <input name="event_date" type="date" required style={inputStyle} />
-            <textarea name="description" placeholder="Description" style={{...inputStyle, height: '100px'}} />
-            <button type="submit" disabled={loading} style={primaryBtn}>Post Event</button>
-          </form>
-        </div>
-      )}
-
-      {(activeTab === 'gallery' || activeTab === 'hero') && (
-        <div style={cardStyle}>
-          <h3>Upload {activeTab === 'hero' ? 'Hero Photo' : 'Gallery Image'}</h3>
+          <h3 style={{fontSize: '18px', marginBottom: '20px'}}>Update {activeTab.toUpperCase()}</h3>
           <form onSubmit={async (e) => {
             e.preventDefault();
             setLoading(true);
             const fd = new FormData(e.currentTarget);
-            const res = activeTab === 'hero' ? await uploadHeroImage(fd) : await uploadGalleryImage(fd);
+            let res;
+            if (activeTab === 'events') res = await addEvent(fd);
+            else if (activeTab === 'hero') res = await uploadHeroImage(fd);
+            else res = await uploadGalleryImage(fd);
             setLoading(false);
-            if(res.success) { alert("Uploaded!"); loadData(); }
+            if(res.success) { alert("Successfully Updated!"); loadData(); e.currentTarget.reset(); }
           }}>
-            {activeTab === 'gallery' && <input name="title" placeholder="Title" required style={inputStyle} />}
+            {activeTab === 'gallery' && <input name="title" placeholder="Image Title" required style={inputStyle} />}
+            {activeTab === 'events' && (
+              <>
+                <input name="title" placeholder="Event Name" required style={inputStyle} />
+                <input name="event_date" type="date" required style={inputStyle} />
+                <textarea name="description" placeholder="Short Event Description" style={{...inputStyle, height: '100px'}} />
+              </>
+            )}
             <input name="image" type="file" accept="image/*" required style={inputStyle} />
-            <button type="submit" disabled={loading} style={primaryBtn}>Upload Now</button>
+            <button type="submit" disabled={loading} style={{...primaryBtn, width: '100%'}}>{loading ? 'Processing...' : `Post to ${activeTab}`}</button>
           </form>
         </div>
       )}
