@@ -16,12 +16,11 @@ export default function HomePage() {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
   const team = [
-    { name: "Priyanshu Ranjan", role: "President", college: "Kirori Mal College" },
-    { name: "Ananya Singh", role: "Vice President", college: "Hindu College" },
-    { name: "Aditya Verma", role: "General Secretary", college: "Ramjas College" },
-    { name: "Ishita Gupta", role: "Treasurer", college: "Hansraj College" },
-    { name: "Rahul Meena", role: "Academic Head", college: "Miranda House" },
-    { name: "Sneha Kapoor", role: "PR & Outreach", college: "SRCC" }
+    
+     { name: "Shagun Sharma", role: "President"},
+      { name: "Akanksha Shama", role: "Vice President" },
+      { name: "Umesh Yadav", role: "Chief Executive Secretary" },
+      { name: "Shubhya Pandey", role: "Joint Secretary"}
   ];
 
   useEffect(() => {
