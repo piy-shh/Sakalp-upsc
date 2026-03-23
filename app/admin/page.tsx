@@ -131,7 +131,7 @@ export default function AdminPage() {
     marginTop: '8px', 
     marginBottom: '15px', 
     boxSizing: 'border-box' as const,
-    fontSize: '16px' // Stops mobile zoom
+    fontSize: '16px' 
   };
   
   const primaryBtn = { 
@@ -144,7 +144,6 @@ export default function AdminPage() {
     cursor: 'pointer' 
   };
 
-  // Loading State
   if (authLoading) {
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
@@ -159,7 +158,7 @@ export default function AdminPage() {
 
   return (
     <div style={containerStyle}>
-      {/* Header - Stacks on Mobile */}
+      {/* FIXED HEADER: Removed the maxWidth constraint that was squishing desktop buttons */}
       <div style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -168,17 +167,21 @@ export default function AdminPage() {
         flexWrap: 'wrap',
         gap: '20px'
       }}>
-        <div>
+        <div style={{ flex: '1 1 300px' }}>
           <h1 style={{ color: '#7A0102', fontSize: 'clamp(24px, 6vw, 32px)', margin: 0, fontWeight: '800' }}>Sankalp Admin</h1>
           <p style={{ color: '#666', fontSize: '14px' }}>Society Management Portal</p>
         </div>
-        <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '350px' }}>
-          <button onClick={() => window.location.href = '/'} style={{ flex: 1, background: 'white', border: '1px solid #ddd', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px' }}>View Site</button>
+        <div style={{ 
+          display: 'flex', 
+          gap: '10px', 
+          flexWrap: 'nowrap' // Keep buttons side-by-side
+        }}>
+          <button onClick={() => window.location.href = '/'} style={{ background: 'white', border: '1px solid #ddd', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap' }}>View Site</button>
           <button onClick={async () => { 
             const s = createClient(); 
             await s.auth.signOut(); 
             router.push('/login'); 
-          }} style={{ flex: 1, background: '#eee', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px' }}>Logout</button>
+          }} style={{ background: '#eee', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap' }}>Logout</button>
         </div>
       </div>
 
@@ -248,7 +251,6 @@ export default function AdminPage() {
             <h3 style={{margin: 0, fontSize: '18px'}}>Members ({approvedMembers.length})</h3>
             <button onClick={downloadCSV} style={{ ...primaryBtn, padding: '8px 15px', fontSize: '11px', backgroundColor: '#2e7d32' }}>Export Excel</button>
           </div>
-          {/* Scrollable Table Container */}
           <div style={{ width: '100%', overflowX: 'auto' }}>
             <table style={{ width: '100%', minWidth: '600px', textAlign: 'left', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>

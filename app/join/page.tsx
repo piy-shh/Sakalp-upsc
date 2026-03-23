@@ -11,7 +11,7 @@ export default function JoinPage() {
     padding: '12px 15px',
     borderRadius: '8px',
     border: '1px solid #ddd',
-    fontSize: '14px',
+    fontSize: '16px', // Changed to 16px to prevent iOS auto-zoom
     outline: 'none',
     width: '100%',
     boxSizing: 'border-box' as 'border-box'
@@ -28,7 +28,7 @@ export default function JoinPage() {
       const { error } = await supabase.from('applications').insert([{
         full_name: formData.get('full_name'),
         email: formData.get('email'),
-        phone: formData.get('phone'), // Added this to fix the database error
+        phone: formData.get('phone'),
         college: formData.get('college'),
         course: formData.get('course'),
         year: formData.get('year'),
@@ -49,9 +49,9 @@ export default function JoinPage() {
 
   if (submitted) {
     return (
-      <div style={{ padding: '100px 8%', textAlign: 'center', minHeight: '60vh', fontFamily: 'sans-serif' }}>
-        <h2 style={{ color: '#7A0102', fontSize: '32px', fontWeight: '800' }}>Application Received!</h2>
-        <p style={{ marginTop: '20px', color: '#555' }}>
+      <div style={{ padding: '80px 20px', textAlign: 'center', minHeight: '60vh', fontFamily: 'sans-serif' }}>
+        <h2 style={{ color: '#7A0102', fontSize: 'clamp(24px, 5vw, 32px)', fontWeight: '800' }}>Application Received!</h2>
+        <p style={{ marginTop: '20px', color: '#555', lineHeight: '1.6' }}>
           Thank you for your interest in Sankalp. <br/> 
           We will review your application and reach out via email soon.
         </p>
@@ -63,53 +63,51 @@ export default function JoinPage() {
   }
 
   return (
-    <div style={{ padding: '60px 8%', maxWidth: '800px', margin: '0 auto', minHeight: '80vh', fontFamily: 'sans-serif' }}>
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h1 style={{ fontSize: '36px', fontWeight: '800' }}>Join <span style={{ color: '#7A0102' }}>Sankalp UPSC</span></h1>
-        <p style={{ color: '#666', marginTop: '10px' }}>Fill out the form below to apply for society membership.</p>
+    <div className="join-container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto', minHeight: '80vh', fontFamily: 'sans-serif' }}>
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <h1 style={{ fontSize: 'clamp(28px, 5vw, 36px)', fontWeight: '800', margin: '0' }}>Join <span style={{ color: '#7A0102' }}>Sankalp UPSC</span></h1>
+        <p style={{ color: '#666', marginTop: '10px', fontSize: '14px' }}>Fill out the form below to apply for society membership.</p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ 
+      <form onSubmit={handleSubmit} className="join-form" style={{ 
         display: 'grid', 
         gap: '20px', 
         backgroundColor: '#fff', 
-        padding: '40px', 
-        borderRadius: '25px', 
-        boxShadow: '0 15px 40px rgba(0,0,0,0.08)',
+        padding: '30px 20px', // Reduced padding for mobile
+        borderRadius: '20px', 
+        boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
         border: '1px solid #eee' 
       }}>
-        {/* Row 1: Name & Email */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+        
+        <div className="form-grid">
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>FULL NAME</label>
+            <label className="label-style">FULL NAME</label>
             <input name="full_name" placeholder="Enter your full name" required style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>EMAIL ADDRESS</label>
+            <label className="label-style">EMAIL ADDRESS</label>
             <input name="email" type="email" placeholder="Enter your email" required style={inputStyle} />
           </div>
         </div>
 
-        {/* Row 2: Phone & College */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+        <div className="form-grid">
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>PHONE NUMBER (WHATSAPP)</label>
-            <input name="phone" type="tel" placeholder="e.g. +91 9876543210" required style={inputStyle} />
+            <label className="label-style">PHONE (WHATSAPP)</label>
+            <input name="phone" type="tel" placeholder="+91 00000 00000" required style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>COLLEGE</label>
-            <input name="college" placeholder="e.g. Kirori Mal College" required style={inputStyle} />
+            <label className="label-style">COLLEGE</label>
+            <input name="college" placeholder="College name" required style={inputStyle} />
           </div>
         </div>
 
-        {/* Row 3: Course & Year */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+        <div className="form-grid">
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>COURSE</label>
+            <label className="label-style">COURSE</label>
             <input name="course" placeholder="e.g. B.A. Pol Science" required style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>YEAR OF STUDY</label>
+            <label className="label-style">YEAR OF STUDY</label>
             <select name="year" required style={inputStyle}>
               <option value="">Select Year</option>
               <option value="1">1st Year</option>
@@ -121,7 +119,7 @@ export default function JoinPage() {
         </div>
 
         <div>
-          <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#7A0102', display: 'block', marginBottom: '5px', letterSpacing: '1px' }}>STATEMENT OF PURPOSE</label>
+          <label className="label-style">STATEMENT OF PURPOSE</label>
           <textarea 
             name="why_join" 
             placeholder="Tell us briefly why you want to join Sankalp UPSC..." 
@@ -130,36 +128,55 @@ export default function JoinPage() {
           />
         </div>
         
-        <button type="submit" disabled={loading} style={{ 
-          padding: '18px', 
-          backgroundColor: '#7A0102', 
-          color: 'white', 
-          border: 'none', 
-          borderRadius: '12px', 
-          fontWeight: 'bold', 
-          cursor: loading ? 'not-allowed' : 'pointer',
-          fontSize: '16px',
-          boxShadow: '0 8px 15px rgba(122, 1, 2, 0.2)',
-          transition: '0.3s'
-        }}>
+        <button type="submit" disabled={loading} className="submit-btn">
           {loading ? 'Processing...' : 'Submit Membership Application'}
         </button>
       </form>
+
+      <style jsx>{`
+        .label-style {
+          font-size: 10px;
+          font-weight: bold;
+          color: #7A0102;
+          display: block;
+          margin-bottom: 6px;
+          letter-spacing: 1px;
+        }
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+        .submit-btn {
+          padding: 16px;
+          background-color: #7A0102;
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-weight: bold;
+          cursor: pointer;
+          font-size: 16px;
+          transition: 0.3s;
+          margin-top: 10px;
+        }
+        .submit-btn:active {
+          transform: scale(0.98);
+        }
+
+        @media (max-width: 600px) {
+          .form-grid {
+            grid-template-columns: 1fr; /* Stack inputs on mobile */
+            gap: 15px;
+          }
+          .join-container {
+            padding: 20px 15px !important;
+          }
+          .join-form {
+            padding: 25px 15px !important;
+            border-radius: 15px;
+          }
+        }
+      `}</style>
     </div>
   );
-}
-export async function getApprovedMembers() {
-  const supabase = await createClient(); // Ensure createClient is imported in this file
-  
-  const { data, error } = await supabase
-    .from('applications')
-    .select('*')
-    .eq('status', 'approved')
-    .order('full_name', { ascending: true });
-
-  if (error) {
-    console.error("Error fetching members:", error.message);
-    return [];
-  }
-  return data || [];
 }
