@@ -154,7 +154,7 @@ export default function TeamPage() {
           </div>
         ))}
       </section>
-      <Footer />
+
     </main>
   );
 }
