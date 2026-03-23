@@ -19,7 +19,7 @@ import {
 export default function AdminPage() {
   const router = useRouter();
 
-  // --- 1. ALL STATE HOOKS ---
+  // --- 1. STATE ---
   const [activeTab, setActiveTab] = useState('applications');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({ pending: 0, approved: 0, rejected: 0 });
@@ -29,7 +29,7 @@ export default function AdminPage() {
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // --- 2. DATA LOADING CALLBACK ---
+  // --- 2. DATA LOADING ---
   const loadData = useCallback(async () => {
     try {
       const [s, apps, heros, members] = await Promise.all([
@@ -47,7 +47,7 @@ export default function AdminPage() {
     }
   }, []);
 
-  // --- 3. ALL USEEFFECT HOOKS ---
+  // --- 3. AUTH CHECK ---
   useEffect(() => {
     const checkUser = async () => {
       const supabase = createClient();
@@ -104,13 +104,15 @@ export default function AdminPage() {
     a.click();
   };
 
-  // --- 5. STYLES (MOBILE RESPONSIVE) ---
+  // --- 5. STYLES ---
   const containerStyle = { 
-    padding: '20px 5%', 
+    padding: '100px 5% 40px', // Added 100px top padding to clear the navigation bar
     maxWidth: '1200px', 
     margin: '0 auto', 
     boxSizing: 'border-box' as const,
-    width: '100%'
+    width: '100%',
+    minHeight: '100vh',
+    fontFamily: 'sans-serif'
   };
   
   const cardStyle = { 
@@ -144,21 +146,11 @@ export default function AdminPage() {
     cursor: 'pointer' 
   };
 
-  if (authLoading) {
-    return (
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ border: '4px solid #f3f3f3', borderTop: '4px solid #7A0102', borderRadius: '50%', width: '40px', height: '40px', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
-          <p style={{ color: '#666' }}>Verifying Admin Credentials...</p>
-        </div>
-        <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
-  }
+  if (authLoading) return <div style={{padding: '120px', textAlign: 'center'}}>Loading Admin...</div>;
 
   return (
     <div style={containerStyle}>
-      {/* FIXED HEADER: Removed the maxWidth constraint that was squishing desktop buttons */}
+      {/* HEADER: Adjusted for visibility below fixed Navbars */}
       <div style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -171,21 +163,17 @@ export default function AdminPage() {
           <h1 style={{ color: '#7A0102', fontSize: 'clamp(24px, 6vw, 32px)', margin: 0, fontWeight: '800' }}>Sankalp Admin</h1>
           <p style={{ color: '#666', fontSize: '14px' }}>Society Management Portal</p>
         </div>
-        <div style={{ 
-          display: 'flex', 
-          gap: '10px', 
-          flexWrap: 'nowrap' // Keep buttons side-by-side
-        }}>
-          <button onClick={() => window.location.href = '/'} style={{ background: 'white', border: '1px solid #ddd', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap' }}>View Site</button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button onClick={() => window.location.href = '/'} style={{ background: 'white', border: '1px solid #ddd', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: 'bold' }}>View Site</button>
           <button onClick={async () => { 
             const s = createClient(); 
             await s.auth.signOut(); 
             router.push('/login'); 
-          }} style={{ background: '#eee', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap' }}>Logout</button>
+          }} style={{ background: '#ff4d4d', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: 'bold' }}>Logout</button>
         </div>
       </div>
 
-      {/* Stats - Grid Stacking */}
+      {/* STATS */}
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
@@ -193,20 +181,20 @@ export default function AdminPage() {
         marginBottom: '40px' 
       }}>
         <div style={{ ...cardStyle, borderLeft: '5px solid #ffa000', marginBottom: 0 }}>
-          <div style={{ fontSize: '10px', color: '#888' }}>PENDING</div>
+          <div style={{ fontSize: '10px', color: '#888', fontWeight: 'bold' }}>PENDING</div>
           <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.pending}</div>
         </div>
         <div style={{ ...cardStyle, borderLeft: '5px solid #2e7d32', marginBottom: 0 }}>
-          <div style={{ fontSize: '10px', color: '#888' }}>APPROVED</div>
+          <div style={{ fontSize: '10px', color: '#888', fontWeight: 'bold' }}>APPROVED</div>
           <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.approved}</div>
         </div>
         <div style={{ ...cardStyle, borderLeft: '5px solid #c62828', marginBottom: 0 }}>
-          <div style={{ fontSize: '10px', color: '#888' }}>REJECTED</div>
+          <div style={{ fontSize: '10px', color: '#888', fontWeight: 'bold' }}>REJECTED</div>
           <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats.rejected}</div>
         </div>
       </div>
 
-      {/* Tabs - Horizontal Scroll on Mobile */}
+      {/* TABS */}
       <div style={{ 
         display: 'flex', 
         gap: '10px', 
@@ -215,7 +203,6 @@ export default function AdminPage() {
         paddingBottom: '10px',
         overflowX: 'auto',
         whiteSpace: 'nowrap',
-        msOverflowStyle: 'none',
         scrollbarWidth: 'none'
       }}>
         {['applications', 'members', 'events', 'gallery', 'hero'].map(tab => (
@@ -227,18 +214,18 @@ export default function AdminPage() {
         ))}
       </div>
 
-      {/* Tab Content */}
+      {/* TAB CONTENT */}
       {activeTab === 'applications' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100%, 1fr))', gap: '20px' }}>
-          {applications.filter(a => a.status === 'pending').length === 0 ? <p style={{textAlign: 'center', opacity: 0.5}}>No pending applications.</p> : 
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+          {applications.filter(a => a.status === 'pending').length === 0 ? <p style={{textAlign: 'center', opacity: 0.5, gridColumn: '1/-1', padding: '40px'}}>No pending applications.</p> : 
           applications.filter(a => a.status === 'pending').map(app => (
             <div key={app.id} style={cardStyle}>
               <h3 style={{fontSize: '18px', marginBottom: '5px'}}>{app.full_name}</h3>
               <p style={{ color: '#7A0102', fontWeight: 'bold', fontSize: '13px' }}>{app.course} • {app.college}</p>
               <div style={{ fontSize: '13px', background: '#f5f5f5', padding: '12px', margin: '15px 0', borderRadius: '6px' }}>"{app.why_join}"</div>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <button onClick={() => handleAction(app.id, 'approved')} style={{ flex: 1, padding: '12px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}>Approve</button>
-                <button onClick={() => handleAction(app.id, 'rejected')} style={{ flex: 1, padding: '12px', background: '#555', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}>Reject</button>
+                <button onClick={() => handleAction(app.id, 'approved')} style={{ flex: 1, padding: '12px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}>Approve</button>
+                <button onClick={() => handleAction(app.id, 'rejected')} style={{ flex: 1, padding: '12px', background: '#555', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}>Reject</button>
               </div>
             </div>
           ))}
